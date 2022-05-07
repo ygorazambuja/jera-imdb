@@ -6,7 +6,7 @@ export default {};
   <nav class="navigation-list">
     <router-link to="/">Home</router-link>
     <router-link to="/recomendados">Recomendados</router-link>
-    <router-link to="/favoritos">Para Assistir</router-link>
+    <router-link to="/para-assistir">Para Assistir</router-link>
     <router-link to="/assistidos">Assistidos</router-link>
   </nav>
 </template>
