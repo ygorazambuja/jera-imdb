@@ -12,11 +12,14 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@vue-icons/feather": "^1.0.19",
     "axios": "^0.27.2",
     "pinia": "^2.0.13",
     "pinia-plugin-persistedstate": "^1.5.1",
+    "sass": "^1.51.0",
     "vue": "^3.2.33",
-    "vue-router": "^4.0.14"
+    "vue-router": "^4.0.14",
+    "vue3-toast-single": "^1.0.2"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.0",

@@ -1,40 +1,158 @@
-<script lang="ts" setup>
+<script lang="ts">
 import type { IMovie } from "@/interfaces";
 import { useMovieStore } from "@/stores/movies";
 import { storeToRefs } from "pinia";
-import { computed, watch } from "vue";
+import { computed } from "vue";
 
-const props = defineProps<{
-  movie: IMovie;
-}>();
+import { getImageFullURL } from "@/services/imdb";
+import { WatchIcon, BookmarkIcon } from "@vue-icons/feather";
+import { useToast } from "@/composables/useToast";
+import { useRouter } from "vue-router";
 
-const { watchList } = storeToRefs(useMovieStore());
-const { addOnWatchList, removeFromWatchList } = useMovieStore();
+export default {
+  props: {
+    movie: {
+      type: Object as () => IMovie,
+    },
+  },
+  components: {
+    WatchIcon,
+    BookmarkIcon,
+  },
+  setup(props: { movie: IMovie }) {
+    const { watchList, watchedList } = storeToRefs(useMovieStore());
+    const {
+      addOnWatchList,
+      removeFromWatchList,
+      removeFromWatchedList,
+      addOnWatchedList,
+      isOnWatchList,
+      isOnWatchedList,
+    } = useMovieStore();
 
-function handleFavouriteClick() {
-  if (isOnWatchList.value) {
-    return removeFromWatchList(props.movie);
-  }
-  return addOnWatchList(props.movie);
-}
+    const { toast } = useToast();
+    const { push } = useRouter();
 
-const isOnWatchList = computed(() => watchList.value.includes(props.movie));
+    function handleFavouriteClick() {
+      if (isOnWatchList(props.movie)) {
+        removeFromWatchList(props.movie);
+        return toast("Removed from watchlist");
+      }
+      addOnWatchList(props.movie);
+      return toast("Added to watch list");
+    }
 
-watch(watchList, () => {
-  console.log(watchList.value.map((pos) => pos.title));
-});
+    function handleWatchedClick() {
+      if (isOnWatchedList(props.movie)) {
+        removeFromWatchedList(props.movie);
+        return toast("Removed from watched list");
+      }
+      addOnWatchedList(props.movie);
+      return toast("Added to watched list");
+    }
+
+    function handleRedirectToDetails() {
+      console.log({
+        isOnWatchList: isOnWatchList,
+        isOnWatchedList: isOnWatchedList,
+      });
+
+      console.log({
+        watchList,
+        watchedList,
+      });
+
+      // push({ name: "MovieDetailsView", params: { id: props.movie.id } });
+    }
+    return {
+      isOnWatchList,
+      isOnWatchedList,
+      handleFavouriteClick,
+      handleWatchedClick,
+      handleRedirectToDetails,
+      props,
+      getImageFullURL,
+    };
+  },
+};
 </script>
 
 <template>
   <div>
-    <div>
-      <span> {{ props.movie.title }}</span>
-      <button
-        @click="handleFavouriteClick"
-        :style="[isOnWatchList ? 'background-color: green;' : 'background-color: red;']"
-      >
-        {{ isOnWatchList ? "Remove from WatchList" : "Add to WatchList" }}
-      </button>
+    <div class="card">
+      <div class="card__header">
+        <div class="card__title">{{ props.movie.title }}</div>
+        <div>
+          <BookmarkIcon
+            size="24"
+            :color="isOnWatchList(props.movie) ? '#ff0000' : 'white'"
+            @click="handleFavouriteClick"
+          />
+          <WatchIcon
+            size="24"
+            :color="isOnWatchedList(props.movie) ? '#ff0000' : 'white'"
+            @click="handleWatchedClick"
+          />
+        </div>
+      </div>
+      <div class="card__body" @click="handleRedirectToDetails">
+        <img
+          :src="getImageFullURL(props.movie.poster_path)"
+          :alt="props.movie.title"
+        />
+      </div>
+      <div class="card__footer">
+        {{ props.movie.title }}
+      </div>
     </div>
   </div>
 </template>
+
+<style lang="scss">
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  max-width: 300px;
+  &__header {
+    padding: 12px 0;
+    display: flex;
+    justify-content: space-between;
+
+    &--active {
+      svg {
+        color: #ff0000;
+      }
+    }
+
+    svg {
+      cursor: pointer;
+
+      transition: all 0.2s;
+
+      &:hover {
+        color: #ff0000;
+      }
+
+      &:active {
+        color: #6f0202;
+      }
+    }
+  }
+
+  &__body {
+    img {
+      width: 100%;
+      transition: all 0.4s;
+      &:hover {
+        cursor: pointer;
+        filter: brightness(1.4);
+      }
+    }
+  }
+  &__footer {
+    font-size: 12px;
+    color: #eee;
+  }
+}
+</style>
