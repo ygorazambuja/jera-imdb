@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useMovieStore } from "@/stores/movies";
 import { storeToRefs } from "pinia";
 import { getMovieById } from "@/services/imdb";
@@ -27,14 +27,18 @@ export default {
       });
     }
 
+    watch(watchList, () => {
+      asyncFetchMoviesById();
+    });
+
     onMounted(async () => {
       await asyncFetchMoviesById();
     });
 
-    const hasMovieOnWatchedList = computed(() => watchList.value.length > 0);
+    const hasMovieOnWatchList = computed(() => watchList.value.length > 0);
 
     return {
-      hasMovieOnWatchedList,
+      hasMovieOnWatchList,
       movies,
     };
   },
@@ -44,12 +48,12 @@ export default {
 <template>
   <div>
     <NavigationBar />
-    <div class="container">
+    <div class="container" v-if="hasMovieOnWatchList">
       <div v-for="movie in movies" :key="movie.id">
         <MovieCard :movie="movie" />
       </div>
     </div>
-    <div v-if="!hasMovieOnWatchedList">
+    <div v-if="!hasMovieOnWatchList">
       <h1>No movies in watchlist</h1>
     </div>
   </div>

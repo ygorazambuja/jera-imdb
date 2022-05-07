@@ -15,7 +15,7 @@ const router = createRouter({
       component: () => import("@/views/RecommendedView.vue"),
     },
     {
-      path: "/favoritos",
+      path: "/para-assistir",
       name: "WatchListView",
       component: () => import("@/views/WatchListView.vue"),
     },
