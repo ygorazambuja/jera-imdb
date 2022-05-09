@@ -7,8 +7,14 @@ import { RouterView } from "vue-router";
 </template>
 
 <style>
+* {
+  font-family: "Nunito", sans-serif;
+}
 body {
-  background-color: black;
-  color: rgba(255, 255, 255, 0.694);
+  background-color: rgb(202, 202, 202);
+}
+
+:root {
+  --jera-green: #0db551;
 }
 </style>

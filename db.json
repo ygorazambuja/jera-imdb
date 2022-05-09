@@ -1,0 +1,20 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Usuario 1",
+      "username": "user1",
+      "password": "123456",
+      "profiles":[
+        {
+          "id": 1,
+          "name": "Perfil 1",
+          "description": "Perfil 1",
+          "watchedList": [],
+          "watchList": []
+        }
+      ]
+
+    }
+  ]
+}

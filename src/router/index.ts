@@ -29,6 +29,16 @@ const router = createRouter({
       name: "MovieDetailsView",
       component: () => import("@/views/MovieDetailsView.vue"),
     },
+    {
+      path: "/perfis",
+      name: "ProfilesView",
+      component: () => import("@/views/ProfilesView.vue"),
+    },
+    {
+      path: "/login",
+      name: "LoginView",
+      component: () => import("@/views/LoginView.vue"),
+    },
   ],
 });
 
