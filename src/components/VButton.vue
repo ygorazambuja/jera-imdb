@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { ComponentPropsOptions, SetupContext } from "vue";
+import type { ComponentPropsOptions } from "vue";
 
 type Props = {
   content: string;
@@ -11,9 +11,13 @@ export default {
       type: String,
       required: true,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
 
-  setup(props: Props, { emit }: SetupContext) {
+  setup(props: Props) {
     return {
       props,
     };
@@ -22,7 +26,7 @@ export default {
 </script>
 
 <template>
-  <button class="container">
+  <button class="container" :disabled="props.disabled">
     <slot />
     {{ props.content }}
   </button>
@@ -34,7 +38,7 @@ export default {
   flex-direction: row;
 
   background-color: var(--jera-green);
-  border: 1px solid rgb(164, 164, 164);
+  border: 0px;
   padding: 12px;
   border-radius: 4px;
   font-size: 16px;
@@ -42,12 +46,14 @@ export default {
   justify-content: center;
   align-items: center;
   transition: all 0.2s ease-in-out;
+
   &:hover {
     cursor: pointer;
     filter: brightness(0.96);
     transform: translateY(-2px);
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   }
+
   &:active {
     transform: translateY(1px);
   }

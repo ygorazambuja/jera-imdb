@@ -7,6 +7,7 @@ import { doLogin } from "@/services/api";
 import { useToast } from "@/composables/useToast";
 import { useUserStore } from "@/stores/user";
 import type { User } from "@/stores/user";
+import { useRouter } from "vue-router";
 export default {
   components: {
     VInput,
@@ -20,8 +21,9 @@ export default {
     });
 
     const { setUser } = useUserStore();
+    const { push } = useRouter();
 
-    const { errorToast } = useToast();
+    const { errorToast, successToast } = useToast();
     async function handleSubmit() {
       try {
         const data = await doLogin(self.login, self.password);
@@ -33,6 +35,12 @@ export default {
 
     function handleSaveUserStore(data: User) {
       setUser(data);
+      redirectToProfilesView();
+    }
+
+    function redirectToProfilesView() {
+      successToast("Bem vindo, redirecionando para a pagina de Perfis");
+      push({ name: "ProfilesView" });
     }
 
     return {

@@ -52,18 +52,9 @@ export default {
     }
 
     function handleRedirectToDetails() {
-      console.log({
-        isOnWatchList: isOnWatchList,
-        isOnWatchedList: isOnWatchedList,
-      });
-
-      console.log({
-        watchList,
-        watchedList,
-      });
-
-      // push({ name: "MovieDetailsView", params: { id: props.movie.id } });
+      push({ name: "MovieDetailsView", params: { id: props.movie.id } });
     }
+
     return {
       isOnWatchList,
       isOnWatchedList,
@@ -96,10 +87,7 @@ export default {
         </div>
       </div>
       <div class="card__body" @click="handleRedirectToDetails">
-        <img
-          :src="getImageFullURL(props.movie.poster_path)"
-          :alt="props.movie.title"
-        />
+        <img :src="getImageFullURL(props.movie.poster_path)" :alt="props.movie.title" />
       </div>
       <div class="card__footer">
         {{ props.movie.title }}
@@ -114,6 +102,7 @@ export default {
   flex-direction: column;
   padding: 12px;
   max-width: 300px;
+
   &__header {
     padding: 12px 0;
     display: flex;
@@ -144,12 +133,14 @@ export default {
     img {
       width: 100%;
       transition: all 0.4s;
+
       &:hover {
         cursor: pointer;
         filter: brightness(1.4);
       }
     }
   }
+
   &__footer {
     font-size: 12px;
     color: #eee;

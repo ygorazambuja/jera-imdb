@@ -3,9 +3,10 @@ import { computed, onMounted, ref, watch } from "vue";
 import { useMovieStore } from "@/stores/movies";
 import { storeToRefs } from "pinia";
 import { getMovieById } from "@/services/imdb";
-import type { IMovie } from "@/interfaces";
 import MovieCard from "@/components/MovieCard.vue";
 import NavigationBar from "@/components/NavigationBar.vue";
+import type { IMovie } from "@/interfaces";
+
 export default {
   name: "WatchListView",
   components: {

@@ -3,13 +3,19 @@
     {
       "id": 1,
       "name": "Usuario 1",
-      "username": "user1",
-      "password": "123456",
+      "username": "ygoazambuja",
+      "password": "ygoazambuja",
       "profiles":[
         {
           "id": 1,
           "name": "Perfil 1",
           "description": "Perfil 1",
+          "watchedList": [],
+          "watchList": []
+        },{
+          "id": 2,
+          "name": "Perfil 2",
+          "description": "Perfil 2",
           "watchedList": [],
           "watchList": []
         }
