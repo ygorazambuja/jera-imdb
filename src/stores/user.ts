@@ -30,43 +30,65 @@ export const useUserStore = defineStore("user", {
     addNewProfile(profile: Profile) {
       this.user.profiles.push(profile);
     },
-    addNewMovieToProfile(profileId: number, movie: IMovie) {
-      const profile = this.user.profiles.find(
-        (profile) => profile.id === profileId
-      );
-      if (profile) {
-        profile.watchedList.push(movie);
-      }
-    },
-    addNewMovieToWatchList(profileId: number, movie: IMovie) {
-      const profile = this.user.profiles.find(
-        (profile) => profile.id === profileId
-      );
-      if (profile) {
-        profile.watchList.push(movie);
-      }
-    },
-    removeMovieFromProfile(profileId: number, movieId: number) {
-      const profile = this.user.profiles.find(
-        (profile) => profile.id === profileId
-      );
-      if (profile) {
-        const movie = profile.watchedList.find((movie) => movie.id === movieId);
-        if (movie) {
-          profile.watchedList.splice(profile.watchedList.indexOf(movie), 1);
+    addNewMovieToWatchedList(movie: IMovie) {
+      this.loggedProfile.watchedList.push(movie);
+
+      this.user.profiles.forEach((profile) => {
+        if (profile.id !== this.loggedProfile.id) {
+          profile.watchList.push(movie);
         }
-      }
+      });
     },
-    removeMovieFromWatchList(profileId: number, movieId: number) {
-      const profile = this.user.profiles.find(
-        (profile) => profile.id === profileId
-      );
-      if (profile) {
-        const movie = profile.watchList.find((movie) => movie.id === movieId);
-        if (movie) {
-          profile.watchList.splice(profile.watchList.indexOf(movie), 1);
+    addNewMovieToWatchList(movie: IMovie) {
+      this.loggedProfile.watchList.push(movie);
+
+      this.user.profiles.forEach((profile) => {
+        if (profile.id !== this.loggedProfile.id) {
+          profile.watchedList.push(movie);
         }
+      });
+    },
+    removeMovieFromWatchedList(movieId: number) {
+      const movieIndex = this.loggedProfile.watchedList.findIndex(
+        (movie) => movie.id === movieId
+      );
+
+      if (movieIndex !== -1) {
+        this.loggedProfile.watchedList.splice(movieIndex, 1);
       }
+
+      this.user.profiles.forEach((profile) => {
+        if (profile.id !== this.loggedProfile.id) {
+          const profileMovieIndex = profile.watchedList.findIndex(
+            (movie) => movie.id === movieId
+          );
+
+          if (profileMovieIndex !== -1) {
+            profile.watchedList.splice(profileMovieIndex, 1);
+          }
+        }
+      });
+    },
+    removeMovieFromWatchList(movieId: number) {
+      const movieIndex = this.loggedProfile.watchList.findIndex(
+        (movie) => movie.id === movieId
+      );
+
+      if (movieIndex !== -1) {
+        this.loggedProfile.watchList.splice(movieIndex, 1);
+      }
+
+      this.user.profiles.forEach((profile) => {
+        if (profile.id !== this.loggedProfile.id) {
+          const profileMovieIndex = profile.watchList.findIndex(
+            (movie) => movie.id === movieId
+          );
+
+          if (profileMovieIndex !== -1) {
+            profile.watchList.splice(profileMovieIndex, 1);
+          }
+        }
+      });
     },
     removeProfile(profileId: number) {
       const profile = this.user.profiles.find(
@@ -93,5 +115,17 @@ export const useUserStore = defineStore("user", {
     getWatchedListFromLoggedProfile: (state) => {
       return state.loggedProfile.watchedList;
     },
+    isMovieOnLoggedProfileWatchList:
+      (state) =>
+      ({ id }: IMovie) => {
+        const movie = state.loggedProfile.watchList.find((m) => m.id === id);
+        return !!movie;
+      },
+    isMovieOnLoggedProfileWatchedList:
+      (state) =>
+      ({ id }: IMovie) => {
+        const movie = state.loggedProfile.watchedList.find((m) => m.id === id);
+        return !!movie;
+      },
   },
 });

@@ -15,7 +15,7 @@ export default defineComponent({
 
 <template>
   <nav class="navigation-list">
-    <div>Jera-IMDB</div>
+    <div class="navigation-list__title">Jera-IMDB</div>
     <div class="navigation-list__profile">
       <span>{{ loggedProfile.name }}</span>
       <img src="https://i.pravatar.cc/300" alt="Avatar" />
@@ -29,6 +29,15 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
   padding: 0;
+
+  background-color: var(--jera-green);
+
+  .navigation-list__title {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 0 12px;
+  }
 
   &__profile {
     display: flex;
@@ -44,6 +53,15 @@ export default defineComponent({
       border-radius: 25%;
       width: 50px;
       height: 50px;
+      margin-right: 8px;
+      padding: 8px;
+
+      transition: all 0.2s;
+      &:hover {
+        cursor: pointer;
+        opacity: 0.7;
+        transform: scale(1.1);
+      }
     }
   }
 

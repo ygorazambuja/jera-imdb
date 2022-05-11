@@ -1,12 +1,12 @@
 <script lang="ts">
 import type { IMovie } from "@/interfaces";
-import { useMovieStore } from "@/stores/movies";
 import { defineComponent } from "vue";
 
 import { getImageFullURL } from "@/services/imdb";
 import { WatchIcon, BookmarkIcon } from "@vue-icons/feather";
 import { useToast } from "@/composables/useToast";
 import { useRouter } from "vue-router";
+import { useUserStore } from "@/stores/user";
 
 export default defineComponent({
   props: {
@@ -21,32 +21,32 @@ export default defineComponent({
   },
   setup(props) {
     const {
-      addOnWatchList,
-      removeFromWatchList,
-      removeFromWatchedList,
-      addOnWatchedList,
-      isOnWatchList,
-      isOnWatchedList,
-    } = useMovieStore();
+      addNewMovieToWatchList,
+      addNewMovieToWatchedList,
+      removeMovieFromWatchList,
+      removeMovieFromWatchedList,
+      isMovieOnLoggedProfileWatchList,
+      isMovieOnLoggedProfileWatchedList,
+    } = useUserStore();
 
     const { toast } = useToast();
     const { push } = useRouter();
 
     function handleFavouriteClick() {
-      if (isOnWatchList(props.movie)) {
-        removeFromWatchList(props.movie);
+      if (isMovieOnLoggedProfileWatchList(props.movie)) {
+        removeMovieFromWatchList(props.movie.id);
         return toast("Removed from watchlist");
       }
-      addOnWatchList(props.movie);
+      addNewMovieToWatchList(props.movie);
       return toast("Added to watch list");
     }
 
     function handleWatchedClick() {
-      if (isOnWatchedList(props.movie)) {
-        removeFromWatchedList(props.movie);
+      if (isMovieOnLoggedProfileWatchedList(props.movie)) {
+        removeMovieFromWatchedList(props.movie.id);
         return toast("Removed from watched list");
       }
-      addOnWatchedList(props.movie);
+      addNewMovieToWatchedList(props.movie);
       return toast("Added to watched list");
     }
 
@@ -55,13 +55,13 @@ export default defineComponent({
     }
 
     return {
-      isOnWatchList,
-      isOnWatchedList,
       handleFavouriteClick,
       handleWatchedClick,
       handleRedirectToDetails,
       props,
       getImageFullURL,
+      isMovieOnLoggedProfileWatchList,
+      isMovieOnLoggedProfileWatchedList,
     };
   },
 });
@@ -71,16 +71,23 @@ export default defineComponent({
   <div>
     <div class="card">
       <div class="card__header">
-        <div class="card__title">{{ props.movie.title }}</div>
         <div>
           <BookmarkIcon
             size="24"
-            :color="isOnWatchList(props.movie) ? '#ff0000' : 'white'"
+            :style="{
+              color: isMovieOnLoggedProfileWatchList(props.movie)
+                ? 'var(--jera-green)'
+                : 'white',
+            }"
             @click="handleFavouriteClick"
           />
           <WatchIcon
             size="24"
-            :color="isOnWatchedList(props.movie) ? '#ff0000' : 'white'"
+            :style="{
+              color: isMovieOnLoggedProfileWatchedList(props.movie)
+                ? 'var(--jera-green)'
+                : 'white',
+            }"
             @click="handleWatchedClick"
           />
         </div>
@@ -91,19 +98,16 @@ export default defineComponent({
           :alt="props.movie.title"
         />
       </div>
-      <div class="card__footer">
-        {{ props.movie.title }}
-      </div>
     </div>
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .card {
   display: flex;
   flex-direction: column;
   padding: 12px;
-  max-width: 300px;
+  width: 200px;
 
   &__header {
     padding: 12px 0;
@@ -112,7 +116,7 @@ export default defineComponent({
 
     &--active {
       svg {
-        color: #ff0000;
+        color: var(--jera-green);
       }
     }
 
@@ -122,11 +126,12 @@ export default defineComponent({
       transition: all 0.2s;
 
       &:hover {
-        color: #ff0000;
+        color: var(--jera-green);
       }
 
       &:active {
-        color: #6f0202;
+        color: var(--jera-green);
+        opacity: 0.5;
       }
     }
   }
@@ -141,11 +146,6 @@ export default defineComponent({
         filter: brightness(1.4);
       }
     }
-  }
-
-  &__footer {
-    font-size: 12px;
-    color: #eee;
   }
 }
 </style>

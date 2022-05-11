@@ -63,10 +63,4 @@ export default defineComponent({
   </div>
 </template>
 
-<style lang="scss">
-.container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  grid-gap: 1rem;
-}
-</style>
+<style lang="scss" scoped></style>
