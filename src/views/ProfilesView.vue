@@ -1,11 +1,12 @@
 <script lang="ts">
 import { useUserStore } from "@/stores/user";
-import { computed, Ref } from "vue";
+import { computed } from "vue";
+import type { Ref } from "vue";
 import ProfileCard from "../components/ProfileCard.vue";
 import VButton from "../components/VButton.vue";
 import type { Profile } from "@/stores/user";
 import { useRouter } from "vue-router";
-export default {
+export default defineComponent({
   name: "ProfilesView",
   components: { ProfileCard, VButton },
   setup() {
@@ -21,8 +22,9 @@ export default {
     }
 
     function redirectToHomeView(event: Ref<Profile>) {
-      console.log(event);
       setLoggedProfile(event);
+
+      push({ name: "HomeView" });
     }
 
     const canCreateNewProfile = computed(() => getProfiles.length <= 4);
@@ -31,11 +33,10 @@ export default {
       canCreateNewProfile,
       createNewProfile,
       redirectToEditProfiles,
-
       redirectToHomeView,
     };
   },
-};
+});
 </script>
 
 <template>
