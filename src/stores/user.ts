@@ -87,5 +87,11 @@ export const useUserStore = defineStore("user", {
     getProfiles: (state) => {
       return state.user.profiles;
     },
+    getWatchListFromLoggedProfile: (state) => {
+      return state.loggedProfile.watchList;
+    },
+    getWatchedListFromLoggedProfile: (state) => {
+      return state.loggedProfile.watchedList;
+    },
   },
 });

@@ -1,12 +1,13 @@
 <script lang="ts">
 import { useMovieStore } from "@/stores/movies";
-import { onMounted, reactive, toRefs, computed } from "vue";
+import { onMounted, reactive, toRefs, computed, defineComponent } from "vue";
 import { getRecommendedMovies } from "@/services/imdb";
 import MovieCardVue from "@/components/MovieCard.vue";
 import { storeToRefs } from "pinia";
 import NavigationBar from "../components/NavigationBar.vue";
+import type { IMovie } from "@/interfaces";
 
-export default {
+export default defineComponent({
   name: "RecommendedView",
   components: {
     MovieCardVue,
@@ -16,7 +17,7 @@ export default {
     const { watchList } = storeToRefs(useMovieStore());
 
     const self = reactive({
-      movies: [],
+      movies: [] as IMovie[],
     });
 
     onMounted(async () => {
@@ -38,7 +39,7 @@ export default {
       hasNoMovies,
     };
   },
-};
+});
 </script>
 
 <template>

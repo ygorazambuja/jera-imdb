@@ -1,20 +1,26 @@
 <script lang="ts">
 import { getMoviesByTitle } from "@/services/imdb";
-import { reactive, ref } from "vue";
+import { defineComponent, reactive, ref } from "vue";
 import type { IMovie } from "@/interfaces";
 import MovieCard from "../components/MovieCard.vue";
 import NavigationBar from "../components/NavigationBar.vue";
+import HorizontalMovieList from "../components/HorizontalMovieList.vue";
+import { useUserStore } from "@/stores/user";
 
-export default {
+export default defineComponent({
   name: "HomeView",
   components: {
     MovieCard,
     NavigationBar,
+    HorizontalMovieList,
   },
   setup() {
     const self = reactive({
       movies: [] as IMovie[],
     });
+
+    const { getWatchListFromLoggedProfile, getWatchedListFromLoggedProfile } =
+      useUserStore();
 
     const search = ref("");
 
@@ -27,9 +33,11 @@ export default {
       search,
       fetchMovies,
       self,
+      getWatchListFromLoggedProfile,
+      getWatchedListFromLoggedProfile,
     };
   },
-};
+});
 </script>
 
 <template>
@@ -43,6 +51,15 @@ export default {
         <MovieCard :movie="movie" />
       </div>
     </div>
+
+    <HorizontalMovieList
+      title="Assistidos"
+      :movies="getWatchListFromLoggedProfile"
+    />
+    <HorizontalMovieList
+      title="Para assistir"
+      :movies="getWatchedListFromLoggedProfile"
+    />
   </div>
 </template>
 

@@ -1,11 +1,13 @@
 <script lang="ts">
 import { useUserStore } from "@/stores/user";
-import { computed } from "vue";
-import type { Ref } from "vue";
+import { computed, defineComponent } from "vue";
 import ProfileCard from "../components/ProfileCard.vue";
 import VButton from "../components/VButton.vue";
-import type { Profile } from "@/stores/user";
 import { useRouter } from "vue-router";
+
+import type { Profile } from "@/stores/user";
+import type { Ref } from "vue";
+
 export default defineComponent({
   name: "ProfilesView",
   components: { ProfileCard, VButton },

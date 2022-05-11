@@ -1,28 +1,25 @@
 <script lang="ts">
 import type { IMovie } from "@/interfaces";
 import { useMovieStore } from "@/stores/movies";
-import { defineComponent, type ComponentPropsOptions } from "vue";
+import { defineComponent } from "vue";
 
 import { getImageFullURL } from "@/services/imdb";
 import { WatchIcon, BookmarkIcon } from "@vue-icons/feather";
 import { useToast } from "@/composables/useToast";
 import { useRouter } from "vue-router";
 
-type Props = {
-  movie: IMovie;
-} & ComponentPropsOptions;
-
 export default defineComponent({
   props: {
     movie: {
       type: Object as () => IMovie,
+      required: true,
     },
   },
   components: {
     WatchIcon,
     BookmarkIcon,
   },
-  setup(props: Props) {
+  setup(props) {
     const {
       addOnWatchList,
       removeFromWatchList,
@@ -89,7 +86,10 @@ export default defineComponent({
         </div>
       </div>
       <div class="card__body" @click="handleRedirectToDetails">
-        <img :src="getImageFullURL(props.movie.poster_path)" :alt="props.movie.title" />
+        <img
+          :src="getImageFullURL(props.movie.poster_path)"
+          :alt="props.movie.title"
+        />
       </div>
       <div class="card__footer">
         {{ props.movie.title }}
