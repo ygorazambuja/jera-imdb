@@ -6,6 +6,8 @@ import { useUserStore } from "@/stores/user";
 import { asyncFetchGetAllMoviesByGenres } from "@/services/imdb";
 import { GENRES } from "@/utils/constants";
 import type { IMovie } from "@/interfaces";
+import { useAuth } from "@/composables/useAuth";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "HomeView",
@@ -19,7 +21,15 @@ export default defineComponent({
 
     const moviesByGenres = reactive({} as { [key: string]: IMovie[] });
 
+    const { isLogged, logout } = useAuth();
+    const { replace } = useRouter();
+
     onBeforeMount(() => {
+      if (!isLogged) {
+        logout();
+        return replace("/login");
+      }
+
       GENRES.forEach(async (genre) => {
         const { results } = await asyncFetchGetAllMoviesByGenres(genre.id);
         moviesByGenres[genre.id] = results;

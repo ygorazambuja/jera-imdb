@@ -2,6 +2,7 @@
 
 interface ImportMetaEnv {
   readonly API_KEY: string;
+  readonly API_URL: string;
 }
 
 interface ImportMeta {
