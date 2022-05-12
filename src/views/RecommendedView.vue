@@ -1,5 +1,5 @@
 <script lang="ts">
-import { onMounted, reactive, toRefs, computed, defineComponent } from "vue";
+import { onMounted, reactive, toRefs, defineComponent } from "vue";
 import { getRecommendedMovies } from "@/services/imdb";
 import NavigationBar from "../components/NavigationBar.vue";
 import type { IMovie } from "@/interfaces";

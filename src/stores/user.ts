@@ -33,18 +33,18 @@ export const useUserStore = defineStore("user", {
     addNewMovieToWatchedList(movie: IMovie) {
       this.loggedProfile.watchedList.push(movie);
 
-      this.user.profiles.forEach((profile) => {
-        if (profile.id !== this.loggedProfile.id) {
-          profile.watchList.push(movie);
+      this.user.profiles.map((profile) => {
+        if (profile.id === this.loggedProfile.id) {
+          profile.watchedList = this.loggedProfile.watchedList;
         }
       });
     },
     addNewMovieToWatchList(movie: IMovie) {
       this.loggedProfile.watchList.push(movie);
 
-      this.user.profiles.forEach((profile) => {
-        if (profile.id !== this.loggedProfile.id) {
-          profile.watchedList.push(movie);
+      this.user.profiles.map((profile) => {
+        if (profile.id === this.loggedProfile.id) {
+          profile.watchList = this.loggedProfile.watchList;
         }
       });
     },

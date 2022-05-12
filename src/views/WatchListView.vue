@@ -1,27 +1,27 @@
 <script lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { defineComponent, onMounted, ref, watch } from "vue";
 import { getMovieById } from "@/services/imdb";
 import NavigationBar from "@/components/NavigationBar.vue";
 import type { IMovie } from "@/interfaces";
 import { useUserStore } from "@/stores/user";
 import MovieListGrid from "@/components/MovieListGrid.vue";
+import { storeToRefs } from "pinia";
 
-export default {
+export default defineComponent({
   name: "WatchListView",
   components: {
     NavigationBar,
     MovieListGrid,
   },
   setup() {
-    // const { getWatchListFromLoggedProfile } = storeToRefs(useMovieStore());
-
-    const { getWatchListFromLoggedProfile } = useUserStore();
+    const { loggedProfile } = storeToRefs(useUserStore());
 
     const movies = ref([] as IMovie[]);
 
     async function asyncFetchMoviesById() {
+      movies.value = [];
       await new Promise((resolve) => {
-        getWatchListFromLoggedProfile.forEach(async (movie) => {
+        loggedProfile.value.watchList.forEach(async (movie) => {
           const data = (await getMovieById(String(movie.id))) as IMovie;
           movies.value.push(data);
         });
@@ -29,7 +29,7 @@ export default {
       });
     }
 
-    watch(getWatchListFromLoggedProfile, () => {
+    watch(loggedProfile.value.watchList, () => {
       asyncFetchMoviesById();
     });
 
@@ -41,7 +41,7 @@ export default {
       movies,
     };
   },
-};
+});
 </script>
 
 <template>

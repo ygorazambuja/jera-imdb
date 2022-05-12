@@ -70,22 +70,37 @@ export default defineComponent({
 <template>
   <div v-if="!!props.movie.poster_path">
     <div class="card">
-      <div class="card__header">
-        <div>
-          <BookmarkIcon size="24" :style="{
-            color: isMovieOnLoggedProfileWatchList(props.movie)
-              ? 'var(--jera-green)'
-              : 'white',
-          }" @click="handleFavouriteClick" />
-          <WatchIcon size="24" :style="{
-            color: isMovieOnLoggedProfileWatchedList(props.movie)
-              ? 'var(--jera-green)'
-              : 'white',
-          }" @click="handleWatchedClick" />
-        </div>
-      </div>
       <div class="card__body" @click="handleRedirectToDetails">
-        <img :src="getImageFullURL(props.movie.poster_path)" :alt="props.movie.title" />
+        <img
+          :src="getImageFullURL(props.movie.poster_path)"
+          :alt="props.movie.title"
+        />
+      </div>
+      <div class="card__footer">
+        <BookmarkIcon
+          :class="[
+            'card__footer__icon',
+            {
+              'card__footer__icon--active': isMovieOnLoggedProfileWatchList(
+                props.movie
+              ),
+            },
+          ]"
+          size="24"
+          @click="handleFavouriteClick"
+        />
+        <WatchIcon
+          :class="[
+            'card__footer__icon',
+            {
+              'card__footer__icon--active': isMovieOnLoggedProfileWatchedList(
+                props.movie
+              ),
+            },
+          ]"
+          size="24"
+          @click="handleWatchedClick"
+        />
       </div>
     </div>
   </div>
@@ -96,7 +111,9 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   padding: 12px;
-  width: 200px;
+  width: 250px;
+  max-width: max-content;
+  margin: 12px auto;
 
   &__header {
     padding: 12px 0;
@@ -108,12 +125,33 @@ export default defineComponent({
         color: var(--jera-green);
       }
     }
+  }
 
-    svg {
+  &__body {
+    img {
+      width: 100%;
+      transition: all 0.4s;
+      border-radius: 8px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+  &__footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 220px;
+
+    &__icon {
       cursor: pointer;
-
       transition: all 0.2s;
-
+      color: white;
+      &--active {
+        color: var(--jera-green);
+      }
       &:hover {
         color: var(--jera-green);
       }
@@ -124,17 +162,9 @@ export default defineComponent({
       }
     }
   }
-
-  &__body {
-    img {
-      width: 100%;
-      transition: all 0.4s;
-
-      &:hover {
-        cursor: pointer;
-        filter: brightness(1.4);
-      }
-    }
+  transition: transform 0.2s ease-in-out;
+  &:hover {
+    transform: scale(1.1);
   }
 }
 </style>

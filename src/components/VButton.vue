@@ -11,6 +11,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    dataCy: {
+      type: String,
+      required: false,
+    },
   },
 
   setup(props) {
@@ -22,7 +26,11 @@ export default defineComponent({
 </script>
 
 <template>
-  <button class="button-container" :disabled="props.disabled">
+  <button
+    class="button-container"
+    :disabled="props.disabled"
+    :data-cy="props.dataCy"
+  >
     <slot />
     {{ props.content }}
   </button>

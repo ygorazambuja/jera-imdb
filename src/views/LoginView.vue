@@ -56,9 +56,15 @@ export default {
 
 <template>
   <div class="loginContainer">
-    <VInput label="Login" v-model="self.login" />
-    <VInput label="Senha" type="password" v-model="self.password" />
-    <VButton content="Entrar" @click="handleSubmit"> </VButton>
+    <VInput label="Login" v-model="self.login" data-cy="login" />
+    <VInput
+      label="Senha"
+      type="password"
+      v-model="self.password"
+      data-cy="password"
+    />
+    <VButton content="Entrar" @click="handleSubmit" data-cy="loginButton">
+    </VButton>
     <VButton content="Criar conta" @click="handleCreateAccount"> </VButton>
   </div>
 </template>

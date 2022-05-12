@@ -43,7 +43,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .movie-list-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
   grid-gap: 1rem;
   margin-top: 1rem;
 }

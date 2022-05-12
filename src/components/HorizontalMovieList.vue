@@ -49,8 +49,9 @@ export default defineComponent({
 
   span {
     color: var(--jera-green);
+    margin: 20px 0;
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     padding: 0 12px;
   }
 

@@ -11,6 +11,10 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    dataCy: {
+      type: String,
+      required: false,
+    },
     type: {
       type: String,
       required: false,
@@ -37,6 +41,7 @@ export default defineComponent({
   <div class="input-container">
     <label class="input-container_label">{{ props.label }} </label>
     <input
+      :data-cy="props.dataCy"
       class="input-container_input"
       :type="props.type"
       :value="props.modelValue"
