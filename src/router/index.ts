@@ -59,6 +59,11 @@ const router = createRouter({
       name: "CreateNewProfileView",
       component: () => import("@/views/CreateNewProfileView.vue"),
     },
+    {
+      path: "/editar-perfis",
+      name: "EditProfilesView",
+      component: () => import("@/views/EditProfilesView.vue"),
+    },
   ],
 });
 

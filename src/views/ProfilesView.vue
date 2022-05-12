@@ -20,7 +20,7 @@ export default defineComponent({
     }
 
     function redirectToEditProfiles() {
-      push({ name: "EditProfileView" });
+      push({ name: "EditProfilesView" });
     }
 
     function redirectToHomeView(event: Profile) {

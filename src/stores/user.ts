@@ -101,6 +101,22 @@ export const useUserStore = defineStore("user", {
     setLoggedProfile(profile: Profile) {
       this.loggedProfile = profile;
     },
+
+    updateProfile(profile: Profile) {
+      const profileIndex = this.user.profiles.findIndex(
+        (profile) => profile.id === profile.id
+      );
+      if (profileIndex !== -1) {
+        this.user.profiles[profileIndex] = profile;
+      }
+
+      const loggedProfileIndex = this.user.profiles.findIndex(
+        (profile) => profile.id === this.loggedProfile.id
+      );
+      if (loggedProfileIndex !== -1) {
+        this.user.profiles[loggedProfileIndex] = profile;
+      }
+    },
   },
   getters: {
     getUser: (state) => {
