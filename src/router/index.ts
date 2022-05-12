@@ -49,6 +49,16 @@ const router = createRouter({
       name: "GenreIdView",
       component: () => import("@/views/GenreIdView.vue"),
     },
+    {
+      path: "/nova-conta",
+      name: "CreateNewAccountView",
+      component: () => import("@/views/CreateNewAccountView.vue"),
+    },
+    {
+      path: "/novo-perfil",
+      name: "CreateNewProfileView",
+      component: () => import("@/views/CreateNewProfileView.vue"),
+    },
   ],
 });
 

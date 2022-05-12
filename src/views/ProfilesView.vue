@@ -16,20 +16,21 @@ export default defineComponent({
     const { push } = useRouter();
 
     function createNewProfile() {
-      console.log("createNewProfile");
+      push({ name: "CreateNewProfileView" });
     }
 
     function redirectToEditProfiles() {
       push({ name: "EditProfileView" });
     }
 
-    function redirectToHomeView(event: Ref<Profile>) {
+    function redirectToHomeView(event: Profile) {
       setLoggedProfile(event);
 
       push({ name: "HomeView" });
     }
 
-    const canCreateNewProfile = computed(() => getProfiles.length <= 4);
+    const canCreateNewProfile = computed(() => getProfiles.length < 4);
+
     return {
       getProfiles,
       canCreateNewProfile,
@@ -55,7 +56,7 @@ export default defineComponent({
 
     <div class="footer">
       <VButton
-        :disabled="canCreateNewProfile"
+        :disabled="!canCreateNewProfile"
         content="Criar Novo Perfil"
         @click="createNewProfile"
       />
@@ -72,13 +73,14 @@ export default defineComponent({
 }
 
 .profile-container {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   padding: 24px;
+  justify-content: space-around;
 }
 
 .footer {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
 }
 </style>

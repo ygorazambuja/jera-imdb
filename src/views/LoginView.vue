@@ -1,8 +1,7 @@
 <script lang="ts">
 import { reactive } from "vue";
 import VInput from "@/components/VInput.vue";
-import VButton from "../components/VButton.vue";
-import { BookIcon } from "@vue-icons/feather";
+import VButton from "@/components/VButton.vue";
 import { doLogin } from "@/services/api";
 import { useToast } from "@/composables/useToast";
 import { useUserStore } from "@/stores/user";
@@ -42,9 +41,14 @@ export default {
       push({ name: "ProfilesView" });
     }
 
+    function handleCreateAccount() {
+      push({ name: "CreateNewAccountView" });
+    }
+
     return {
       self,
       handleSubmit,
+      handleCreateAccount,
     };
   },
 };
@@ -55,6 +59,7 @@ export default {
     <VInput label="Login" v-model="self.login" />
     <VInput label="Senha" type="password" v-model="self.password" />
     <VButton content="Entrar" @click="handleSubmit"> </VButton>
+    <VButton content="Criar conta" @click="handleCreateAccount"> </VButton>
   </div>
 </template>
 
@@ -67,5 +72,9 @@ export default {
   align-items: center;
   max-width: 400px;
   margin: 0 auto;
+
+  button {
+    margin-top: 16px;
+  }
 }
 </style>

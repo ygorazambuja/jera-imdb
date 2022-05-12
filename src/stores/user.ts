@@ -2,7 +2,7 @@ import type { IMovie } from "@/interfaces";
 import { defineStore } from "pinia";
 
 export type User = {
-  id: number;
+  id: string;
   username: string;
   name: string;
   password: string;
@@ -10,7 +10,7 @@ export type User = {
 };
 
 export type Profile = {
-  id: number;
+  id: string;
   name: string;
   description: string;
   watchedList: IMovie[];
@@ -90,7 +90,7 @@ export const useUserStore = defineStore("user", {
         }
       });
     },
-    removeProfile(profileId: number) {
+    removeProfile(profileId: string) {
       const profile = this.user.profiles.find(
         (profile) => profile.id === profileId
       );

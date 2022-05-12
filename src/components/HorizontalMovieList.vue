@@ -19,7 +19,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const hasMovies = computed(() => props.movies.length > 0);
+    const hasMovies = computed(() => props.movies?.length > 0);
 
     return {
       props,

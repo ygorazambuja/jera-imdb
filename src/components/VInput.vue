@@ -1,13 +1,7 @@
 <script lang="ts">
-import type { ComponentPropsOptions, SetupContext } from "vue";
+import { defineComponent, type SetupContext } from "vue";
 
-type Props = {
-  label: string;
-  type?: string;
-  modelValue: string;
-} & ComponentPropsOptions;
-
-export default {
+export default defineComponent({
   props: {
     label: {
       type: String,
@@ -25,7 +19,7 @@ export default {
     },
   },
 
-  setup(props: Props, { emit }: SetupContext) {
+  setup(props, { emit }: SetupContext) {
     const updateInput = (event: Event) => {
       const target = event.target as HTMLInputElement;
       emit("update:modelValue", target.value);
@@ -36,7 +30,7 @@ export default {
       updateInput,
     };
   },
-};
+});
 </script>
 
 <template>
