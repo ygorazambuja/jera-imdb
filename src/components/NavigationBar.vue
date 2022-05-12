@@ -2,6 +2,7 @@
 import { useUserStore } from "@/stores/user";
 import { defineComponent } from "vue";
 import { MenuIcon } from "@vue-icons/feather";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "NavigationBar",
@@ -10,8 +11,17 @@ export default defineComponent({
   },
   setup() {
     const { loggedProfile } = useUserStore();
+
+    const { push } = useRouter();
+
+    function handleRedirectToProfile() {
+      push("/perfis");
+    }
+
     return {
       loggedProfile,
+
+      handleRedirectToProfile,
     };
   },
 });
@@ -27,7 +37,7 @@ export default defineComponent({
     </div>
     <div class="navigation-list__profile">
       <span>{{ loggedProfile.name }}</span>
-      <img src="https://i.pravatar.cc/300" alt="Avatar" />
+      <img src="https://i.pravatar.cc/300" alt="Avatar" @click="handleRedirectToProfile" />
     </div>
   </nav>
 </template>
