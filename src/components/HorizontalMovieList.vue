@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { computed, defineComponent } from "vue";
 import type { IMovie } from "@/interfaces";
 import MovieCard from "./MovieCard.vue";
 
@@ -19,15 +19,18 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const hasMovies = computed(() => props.movies.length > 0);
+
     return {
       props,
+      hasMovies,
     };
   },
 });
 </script>
 
 <template>
-  <div class="container">
+  <div class="container" v-if="hasMovies">
     <div>
       <span>{{ props.title }}</span>
     </div>
@@ -57,6 +60,20 @@ export default defineComponent({
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
+
+    &::-webkit-scrollbar {
+      width: 20px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: #e4e4e4;
+      border-radius: 100px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 100px;
+      background-image: linear-gradient(180deg, #36d05f 0%, #030508 99%);
+    }
   }
 }
 </style>

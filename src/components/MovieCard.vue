@@ -68,35 +68,24 @@ export default defineComponent({
 </script>
 
 <template>
-  <div>
+  <div v-if="!!props.movie.poster_path">
     <div class="card">
       <div class="card__header">
         <div>
-          <BookmarkIcon
-            size="24"
-            :style="{
-              color: isMovieOnLoggedProfileWatchList(props.movie)
-                ? 'var(--jera-green)'
-                : 'white',
-            }"
-            @click="handleFavouriteClick"
-          />
-          <WatchIcon
-            size="24"
-            :style="{
-              color: isMovieOnLoggedProfileWatchedList(props.movie)
-                ? 'var(--jera-green)'
-                : 'white',
-            }"
-            @click="handleWatchedClick"
-          />
+          <BookmarkIcon size="24" :style="{
+            color: isMovieOnLoggedProfileWatchList(props.movie)
+              ? 'var(--jera-green)'
+              : 'white',
+          }" @click="handleFavouriteClick" />
+          <WatchIcon size="24" :style="{
+            color: isMovieOnLoggedProfileWatchedList(props.movie)
+              ? 'var(--jera-green)'
+              : 'white',
+          }" @click="handleWatchedClick" />
         </div>
       </div>
       <div class="card__body" @click="handleRedirectToDetails">
-        <img
-          :src="getImageFullURL(props.movie.poster_path)"
-          :alt="props.movie.title"
-        />
+        <img :src="getImageFullURL(props.movie.poster_path)" :alt="props.movie.title" />
       </div>
     </div>
   </div>

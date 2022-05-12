@@ -36,3 +36,21 @@ export async function asyncFetchMoviesById(ids: number[]) {
     return resolve(movies);
   });
 }
+
+export async function asyncFetchAllMovieGender() {
+  const url = `${BASE_URL}/genre/movie/list?${API_KEY}`;
+  const { data } = await axios.get(url);
+  return data;
+}
+
+export async function asyncFetchGetAllTrendingMovies() {
+  const url = `${BASE_URL}/trending/movie/day?${API_KEY}`;
+  const { data } = await axios.get(url);
+  return data;
+}
+
+export async function asyncFetchGetAllMoviesByGenres(genderId: number) {
+  const url = `${BASE_URL}/discover/movie?${API_KEY}&with_genres=${genderId}`;
+  const { data } = await axios.get(url);
+  return data;
+}

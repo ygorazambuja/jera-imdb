@@ -12,6 +12,7 @@ import { RouterView } from "vue-router";
   margin: 0;
   box-sizing: border-box;
 }
+
 body {
   background-color: var(--bg-color);
 }

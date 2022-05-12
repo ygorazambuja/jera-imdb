@@ -1,9 +1,13 @@
 <script lang="ts">
 import { useUserStore } from "@/stores/user";
 import { defineComponent } from "vue";
+import { MenuIcon } from "@vue-icons/feather";
 
 export default defineComponent({
   name: "NavigationBar",
+  components: {
+    MenuIcon,
+  },
   setup() {
     const { loggedProfile } = useUserStore();
     return {
@@ -15,7 +19,12 @@ export default defineComponent({
 
 <template>
   <nav class="navigation-list">
-    <div class="navigation-list__title">Jera-IMDB</div>
+    <div class="navigation-list__title">
+      <span>
+        <MenuIcon size="24" />
+      </span>
+      <span>Jera-IMDB</span>
+    </div>
     <div class="navigation-list__profile">
       <span>{{ loggedProfile.name }}</span>
       <img src="https://i.pravatar.cc/300" alt="Avatar" />
@@ -30,6 +39,8 @@ export default defineComponent({
   align-items: center;
   padding: 0;
 
+  width: 100%;
+
   background-color: var(--jera-green);
 
   .navigation-list__title {
@@ -37,6 +48,17 @@ export default defineComponent({
     font-size: 1.2rem;
     font-weight: bold;
     padding: 0 12px;
+
+    display: flex;
+    align-items: center;
+
+    svg {
+      margin-right: 12px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
   }
 
   &__profile {
@@ -57,6 +79,7 @@ export default defineComponent({
       padding: 8px;
 
       transition: all 0.2s;
+
       &:hover {
         cursor: pointer;
         opacity: 0.7;

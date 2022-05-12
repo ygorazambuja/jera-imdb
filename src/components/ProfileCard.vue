@@ -1,19 +1,15 @@
 <script lang="ts">
 import type { Profile } from "@/stores/user";
-import { toRefs, type ComponentPropsOptions, type SetupContext } from "vue";
+import { toRefs, defineComponent, type SetupContext } from "vue";
 
-type Props = {
-  profile: Profile;
-} & ComponentPropsOptions;
-
-export default {
+export default defineComponent({
   name: "ProfileCard",
   props: {
     profile: {
       type: Object as () => Profile,
     },
   },
-  setup(props: Props, { emit }: SetupContext) {
+  setup(props, { emit }: SetupContext) {
     function handleCardClick() {
       emit("onCardClick", props.profile);
     }
@@ -23,7 +19,7 @@ export default {
       handleCardClick,
     };
   },
-};
+});
 </script>
 
 <template>
@@ -31,7 +27,7 @@ export default {
     <div class="profile-card__avatar" @click="handleCardClick">
       <img src="https://i.pravatar.cc/300" alt="" />
     </div>
-    <span class="profile-card__title"> {{ profile.name }}</span>
+    <span class="profile-card__title"> {{ profile?.name }}</span>
   </div>
 </template>
 

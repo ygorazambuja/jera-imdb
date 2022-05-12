@@ -1,11 +1,7 @@
 <script lang="ts">
-import type { ComponentPropsOptions } from "vue";
+import { defineComponent } from "vue";
 
-type Props = {
-  content: string;
-} & ComponentPropsOptions;
-
-export default {
+export default defineComponent({
   props: {
     content: {
       type: String,
@@ -17,12 +13,12 @@ export default {
     },
   },
 
-  setup(props: Props) {
+  setup(props) {
     return {
       props,
     };
   },
-};
+});
 </script>
 
 <template>

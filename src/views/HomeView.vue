@@ -1,40 +1,36 @@
 <script lang="ts">
-import { getMoviesByTitle } from "@/services/imdb";
-import { defineComponent, reactive, ref } from "vue";
-import type { IMovie } from "@/interfaces";
-import MovieCard from "../components/MovieCard.vue";
+import { defineComponent, onBeforeMount, onMounted, reactive } from "vue";
 import NavigationBar from "../components/NavigationBar.vue";
 import HorizontalMovieList from "../components/HorizontalMovieList.vue";
 import { useUserStore } from "@/stores/user";
+import { asyncFetchGetAllMoviesByGenres } from "@/services/imdb";
+import { GENRES } from "@/utils/constants";
+import type { IMovie } from "@/interfaces";
 
 export default defineComponent({
   name: "HomeView",
   components: {
-    MovieCard,
     NavigationBar,
     HorizontalMovieList,
   },
   setup() {
-    const self = reactive({
-      movies: [] as IMovie[],
-    });
-
     const { getWatchListFromLoggedProfile, getWatchedListFromLoggedProfile } =
       useUserStore();
 
-    const search = ref("");
+    const moviesByGenres = reactive({} as { [key: string]: IMovie[] });
 
-    const fetchMovies = async () => {
-      const data = await getMoviesByTitle(search.value);
-      self.movies = data.results;
-    };
+    onBeforeMount(() => {
+      GENRES.forEach(async (genre) => {
+        const { results } = await asyncFetchGetAllMoviesByGenres(genre.id);
+        moviesByGenres[genre.id] = results;
+      });
+    });
 
     return {
-      search,
-      fetchMovies,
-      self,
       getWatchListFromLoggedProfile,
       getWatchedListFromLoggedProfile,
+      moviesByGenres,
+      GENRES,
     };
   },
 });
@@ -44,23 +40,11 @@ export default defineComponent({
   <div>
     <NavigationBar />
 
-    <input type="text" v-model="search" @keydown.enter="fetchMovies" />
+    <HorizontalMovieList title="Assistidos" :movies="getWatchListFromLoggedProfile" />
+    <HorizontalMovieList title="Para assistir" :movies="getWatchedListFromLoggedProfile" />
 
-    <div class="container">
-      <div v-for="movie in self.movies" :key="movie.id">
-        <MovieCard :movie="movie" />
-      </div>
-    </div>
-
-    <HorizontalMovieList
-      title="Assistidos"
-      :movies="getWatchListFromLoggedProfile"
-    />
-    <HorizontalMovieList
-      title="Para assistir"
-      :movies="getWatchedListFromLoggedProfile"
-    />
+    <template v-for="(movies, key) in moviesByGenres" :key="key">
+      <HorizontalMovieList :title="GENRES[key]?.name || ''" :movies="movies" />
+    </template>
   </div>
 </template>
-
-<style lang="scss" scoped></style>
