@@ -1,20 +1,19 @@
 <script lang="ts">
-import { useMovieStore } from "@/stores/movies";
 import { onMounted, reactive, toRefs, computed, defineComponent } from "vue";
 import { getRecommendedMovies } from "@/services/imdb";
-import MovieCardVue from "@/components/MovieCard.vue";
-import { storeToRefs } from "pinia";
 import NavigationBar from "../components/NavigationBar.vue";
 import type { IMovie } from "@/interfaces";
+import { useUserStore } from "@/stores/user";
+import MovieListGrid from "../components/MovieListGrid.vue";
 
 export default defineComponent({
   name: "RecommendedView",
   components: {
-    MovieCardVue,
     NavigationBar,
+    MovieListGrid,
   },
   setup() {
-    const { watchList } = storeToRefs(useMovieStore());
+    const { getWatchListFromLoggedProfile } = useUserStore();
 
     const self = reactive({
       movies: [] as IMovie[],
@@ -25,18 +24,16 @@ export default defineComponent({
     });
 
     async function asyncFetchRecommendedMovies() {
-      const ids = watchList.value.map(({ id }) => id);
+      const ids = getWatchListFromLoggedProfile.map(({ id }) => id);
       if (ids.length === 0) return;
 
       const { results } = await getRecommendedMovies(ids);
 
       self.movies = results;
     }
-    const hasNoMovies = computed(() => self.movies.length === 0);
 
     return {
       ...toRefs(self),
-      hasNoMovies,
     };
   },
 });
@@ -46,22 +43,6 @@ export default defineComponent({
   <div>
     <NavigationBar />
 
-    <div class="card-grid">
-      <div v-for="movie in movies" :key="movie.id">
-        <MovieCardVue :movie="movie" />
-      </div>
-    </div>
-
-    <div v-if="hasNoMovies">
-      <h1>Sem Filmes Cadastradoss</h1>
-    </div>
+    <MovieListGrid :movies="movies" :label="'Recomendados para você'" />
   </div>
 </template>
-
-<style lang="scss">
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  grid-gap: 1rem;
-}
-</style>

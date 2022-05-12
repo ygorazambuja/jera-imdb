@@ -16,18 +16,18 @@ export default defineComponent({
     HorizontalMovieList,
   },
   setup() {
-    const { getWatchListFromLoggedProfile, getWatchedListFromLoggedProfile } =
-      useUserStore();
+    const {
+      getWatchListFromLoggedProfile,
+      getWatchedListFromLoggedProfile,
+    } = useUserStore();
 
     const moviesByGenres = reactive({} as { [key: string]: IMovie[] });
 
     const { isLogged, logout } = useAuth();
-    const { replace } = useRouter();
 
     onBeforeMount(() => {
       if (!isLogged) {
-        logout();
-        return replace("/login");
+        return logout();
       }
 
       GENRES.forEach(async (genre) => {
@@ -51,7 +51,10 @@ export default defineComponent({
     <NavigationBar />
 
     <HorizontalMovieList title="Assistidos" :movies="getWatchListFromLoggedProfile" />
-    <HorizontalMovieList title="Para assistir" :movies="getWatchedListFromLoggedProfile" />
+    <HorizontalMovieList
+      title="Para assistir"
+      :movies="getWatchedListFromLoggedProfile"
+    />
 
     <template v-for="(movies, key) in moviesByGenres" :key="key">
       <HorizontalMovieList :title="GENRES[key]?.name || ''" :movies="movies" />

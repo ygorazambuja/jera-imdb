@@ -44,6 +44,11 @@ const router = createRouter({
       name: "SearchMovieView",
       component: () => import("@/views/SearchMovieView.vue"),
     },
+    {
+      path: "/genero/:id",
+      name: "GenreIdView",
+      component: () => import("@/views/GenreIdView.vue"),
+    },
   ],
 });
 

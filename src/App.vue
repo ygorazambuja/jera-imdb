@@ -21,6 +21,10 @@ span {
   color: var(--text-color);
 }
 
+h1 {
+  color: var(--text-color);
+}
+
 :root {
   --jera-green: #0db551;
   --bg-color: #333;

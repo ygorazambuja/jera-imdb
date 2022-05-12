@@ -41,8 +41,8 @@ export default defineComponent({
   &__avatar {
     & img {
       border-radius: 25%;
-      width: 300px;
-      height: 300px;
+      max-width: 150px;
+      max-height: 150px;
 
       transition: all 0.5s ease;
 

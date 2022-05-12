@@ -22,25 +22,25 @@ export default defineComponent({
 </script>
 
 <template>
-  <button class="container" :disabled="props.disabled">
+  <button class="button-container" :disabled="props.disabled">
     <slot />
     {{ props.content }}
   </button>
 </template>
 
 <style lang="scss" scoped>
-.container {
+.button-container {
   display: flex;
   flex-direction: row;
 
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
   background-color: var(--jera-green);
   border: 0px;
-  padding: 12px;
   border-radius: 4px;
   font-size: 16px;
-  font-weight: 600;
-  justify-content: center;
-  align-items: center;
+  font-weight: bold;
   transition: all 0.2s ease-in-out;
 
   &:hover {

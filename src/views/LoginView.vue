@@ -12,7 +12,6 @@ export default {
   components: {
     VInput,
     VButton,
-    BookIcon,
   },
   setup() {
     const self = reactive({
@@ -52,13 +51,21 @@ export default {
 </script>
 
 <template>
-  <div>
-    <div class="container">
-      <VInput label="Login" v-model="self.login" />
-      <VInput label="Senha" type="password" v-model="self.password" />
-      <VButton content="Entrar" @click="handleSubmit">
-        <BookIcon size="24" color="red" />
-      </VButton>
-    </div>
+  <div class="loginContainer">
+    <VInput label="Login" v-model="self.login" />
+    <VInput label="Senha" type="password" v-model="self.password" />
+    <VButton content="Entrar" @click="handleSubmit"> </VButton>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.loginContainer {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 400px;
+  margin: 0 auto;
+}
+</style>

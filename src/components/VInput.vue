@@ -40,10 +40,10 @@ export default {
 </script>
 
 <template>
-  <div class="container">
-    <label class="container_label">{{ props.label }} </label>
+  <div class="input-container">
+    <label class="input-container_label">{{ props.label }} </label>
     <input
-      class="container_input"
+      class="input-container_input"
       :type="props.type"
       :value="props.modelValue"
       @input="updateInput"
@@ -52,11 +52,17 @@ export default {
 </template>
 
 <style lang="scss">
-.container {
+.input-container {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+
   &_label {
     font-size: 1.1rem;
+    font-weight: bold;
+    color: #999;
+    margin-bottom: 0.5rem;
   }
 
   &_input {

@@ -7,20 +7,22 @@ import { getMovieById } from "@/services/imdb";
 
 import MovieCard from "@/components/MovieCard.vue";
 import NavigationBar from "@/components/NavigationBar.vue";
+import { useUserStore } from "@/stores/user";
+import MovieListGrid from "../components/MovieListGrid.vue";
 export default {
   components: {
     MovieCard,
     NavigationBar,
+    MovieListGrid,
   },
 
   setup() {
-    const { watchedList } = storeToRefs(useMovieStore());
-
+    const { getWatchedListFromLoggedProfile } = useUserStore();
     const movies = ref([] as IMovie[]);
 
     async function asyncFetchMoviesById() {
       await new Promise((resolve) => {
-        watchedList.value.forEach(async (movie) => {
+        getWatchedListFromLoggedProfile.forEach(async (movie) => {
           const data = (await getMovieById(String(movie.id))) as IMovie;
           movies.value.push(data);
         });
@@ -32,15 +34,17 @@ export default {
       await asyncFetchMoviesById();
     });
 
-    watch(watchedList, () => {
+    watch(getWatchedListFromLoggedProfile, () => {
       asyncFetchMoviesById();
     });
 
-    const hasMovieOnWatchedList = computed(() => watchedList.value.length > 0);
+    const hasMovieOnWatchedList = computed(
+      () => getWatchedListFromLoggedProfile.length > 0
+    );
 
     return {
       movies,
-      watchedList,
+      getWatchedListFromLoggedProfile,
       hasMovieOnWatchedList,
     };
   },
@@ -50,18 +54,7 @@ export default {
 <template>
   <div>
     <NavigationBar />
-
-    <div class="container">
-      <div v-if="hasMovieOnWatchedList">
-        <div v-for="movie in movies" :key="movie.id">
-          <MovieCard :movie="movie" />
-        </div>
-      </div>
-
-      <div v-if="!hasMovieOnWatchedList">
-        <h1>No movies in watchlist</h1>
-      </div>
-    </div>
+    <MovieListGrid :movies="movies" :label="'Assistidos'" />
   </div>
 </template>
 

@@ -49,8 +49,11 @@ export async function asyncFetchGetAllTrendingMovies() {
   return data;
 }
 
-export async function asyncFetchGetAllMoviesByGenres(genderId: number) {
-  const url = `${BASE_URL}/discover/movie?${API_KEY}&with_genres=${genderId}`;
+export async function asyncFetchGetAllMoviesByGenres(
+  genderId: number | string,
+  page = 1
+) {
+  const url = `${BASE_URL}/discover/movie?${API_KEY}&with_genres=${genderId}&page=${page}`;
   const { data } = await axios.get(url);
   return data;
 }

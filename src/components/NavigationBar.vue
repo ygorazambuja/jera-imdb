@@ -3,14 +3,18 @@ import { useUserStore } from "@/stores/user";
 import { defineComponent } from "vue";
 import { MenuIcon } from "@vue-icons/feather";
 import { useRouter } from "vue-router";
+import SideBar from "./SideBar.vue";
+import { useSideBarStore } from "@/stores/sidebar";
 
 export default defineComponent({
   name: "NavigationBar",
   components: {
     MenuIcon,
+    SideBar,
   },
   setup() {
     const { loggedProfile } = useUserStore();
+    const { toggleSideBar } = useSideBarStore();
 
     const { push } = useRouter();
 
@@ -20,7 +24,7 @@ export default defineComponent({
 
     return {
       loggedProfile,
-
+      toggleSideBar,
       handleRedirectToProfile,
     };
   },
@@ -28,16 +32,21 @@ export default defineComponent({
 </script>
 
 <template>
+  <SideBar />
   <nav class="navigation-list">
     <div class="navigation-list__title">
       <span>
-        <MenuIcon size="24" />
+        <MenuIcon size="24" @click="toggleSideBar()" />
       </span>
       <span>Jera-IMDB</span>
     </div>
     <div class="navigation-list__profile">
       <span>{{ loggedProfile.name }}</span>
-      <img src="https://i.pravatar.cc/300" alt="Avatar" @click="handleRedirectToProfile" />
+      <img
+        src="https://i.pravatar.cc/300"
+        alt="Avatar"
+        @click="handleRedirectToProfile"
+      />
     </div>
   </nav>
 </template>

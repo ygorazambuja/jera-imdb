@@ -44,13 +44,13 @@ export default defineComponent({
 <template>
   <div>
     <div class="title">
-      <h1>Quem está assistindo ?</h1>
+      <span>Quem está assistindo ?</span>
     </div>
 
-    <div class="container">
-      <div v-for="profile in getProfiles" :key="profile.id">
+    <div class="profile-container">
+      <template v-for="profile in getProfiles" :key="profile.id">
         <ProfileCard :profile="profile" @on-card-click="redirectToHomeView" />
-      </div>
+      </template>
     </div>
 
     <div class="footer">
@@ -66,12 +66,14 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .title {
-  font-size: 1.8rem;
+  margin: 12px;
+  font-size: 1.5rem;
   text-align: center;
 }
 
-.container {
+.profile-container {
   display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
   padding: 24px;
 }
 

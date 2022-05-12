@@ -1,26 +1,27 @@
 <script lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
-import { useMovieStore } from "@/stores/movies";
-import { storeToRefs } from "pinia";
+import { onMounted, ref, watch } from "vue";
 import { getMovieById } from "@/services/imdb";
-import MovieCard from "@/components/MovieCard.vue";
 import NavigationBar from "@/components/NavigationBar.vue";
 import type { IMovie } from "@/interfaces";
+import { useUserStore } from "@/stores/user";
+import MovieListGrid from "@/components/MovieListGrid.vue";
 
 export default {
   name: "WatchListView",
   components: {
-    MovieCard,
     NavigationBar,
+    MovieListGrid,
   },
   setup() {
-    const { watchList } = storeToRefs(useMovieStore());
+    // const { getWatchListFromLoggedProfile } = storeToRefs(useMovieStore());
+
+    const { getWatchListFromLoggedProfile } = useUserStore();
 
     const movies = ref([] as IMovie[]);
 
     async function asyncFetchMoviesById() {
       await new Promise((resolve) => {
-        watchList.value.forEach(async (movie) => {
+        getWatchListFromLoggedProfile.forEach(async (movie) => {
           const data = (await getMovieById(String(movie.id))) as IMovie;
           movies.value.push(data);
         });
@@ -28,7 +29,7 @@ export default {
       });
     }
 
-    watch(watchList, () => {
+    watch(getWatchListFromLoggedProfile, () => {
       asyncFetchMoviesById();
     });
 
@@ -36,10 +37,7 @@ export default {
       await asyncFetchMoviesById();
     });
 
-    const hasMovieOnWatchList = computed(() => watchList.value.length > 0);
-
     return {
-      hasMovieOnWatchList,
       movies,
     };
   },
@@ -49,21 +47,8 @@ export default {
 <template>
   <div>
     <NavigationBar />
-    <div class="container" v-if="hasMovieOnWatchList">
-      <div v-for="movie in movies" :key="movie.id">
-        <MovieCard :movie="movie" />
-      </div>
-    </div>
-    <div v-if="!hasMovieOnWatchList">
-      <h1>No movies in watchlist</h1>
-    </div>
+    <MovieListGrid :movies="movies" :label="'Para assistir'" />
   </div>
 </template>
 
-<style lang="scss">
-.container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  grid-gap: 1rem;
-}
-</style>
+<style lang="scss" scoped></style>
