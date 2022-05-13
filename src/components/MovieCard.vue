@@ -3,7 +3,7 @@ import type { IMovie } from "@/interfaces";
 import { defineComponent } from "vue";
 
 import { getImageFullURL } from "@/services/imdb";
-import { WatchIcon, BookmarkIcon } from "@vue-icons/feather";
+import { EyeIcon, BookmarkIcon } from "@vue-icons/feather";
 import { useToast } from "@/composables/useToast";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/user";
@@ -16,7 +16,7 @@ export default defineComponent({
     },
   },
   components: {
-    WatchIcon,
+    EyeIcon,
     BookmarkIcon,
   },
   setup(props) {
@@ -71,25 +71,20 @@ export default defineComponent({
   <div v-if="!!props.movie.poster_path">
     <div class="card">
       <div class="card__body" @click="handleRedirectToDetails">
-        <img
-          :src="getImageFullURL(props.movie.poster_path)"
-          :alt="props.movie.title"
-        />
+        <img :src="getImageFullURL(props.movie.poster_path)" :alt="props.movie.title" />
       </div>
       <div class="card__footer">
         <BookmarkIcon
           :class="[
             'card__footer__icon',
             {
-              'card__footer__icon--active': isMovieOnLoggedProfileWatchList(
-                props.movie
-              ),
+              'card__footer__icon--active': isMovieOnLoggedProfileWatchList(props.movie),
             },
           ]"
           size="24"
           @click="handleFavouriteClick"
         />
-        <WatchIcon
+        <EyeIcon
           :class="[
             'card__footer__icon',
             {
@@ -138,6 +133,7 @@ export default defineComponent({
       }
     }
   }
+
   &__footer {
     display: flex;
     flex-direction: row;
@@ -149,9 +145,11 @@ export default defineComponent({
       cursor: pointer;
       transition: all 0.2s;
       color: white;
+
       &--active {
         color: var(--jera-green);
       }
+
       &:hover {
         color: var(--jera-green);
       }
@@ -162,7 +160,9 @@ export default defineComponent({
       }
     }
   }
+
   transition: transform 0.2s ease-in-out;
+
   &:hover {
     transform: scale(1.1);
   }
