@@ -25,22 +25,31 @@ export default defineComponent({
 
     const { isLogged, logout } = useAuth();
 
-    onBeforeMount(() => {
+    onBeforeMount(async () => {
       if (!isLogged) {
         return logout();
       }
 
-      GENRES.forEach(async (genre) => {
-        const { results } = await asyncFetchGetAllMoviesByGenres(genre.id);
-        moviesByGenres[genre.id] = results;
+      await new Promise((resolve) => {
+        GENRES.forEach(async (genre) => {
+          const { results } = await asyncFetchGetAllMoviesByGenres(genre.id);
+          moviesByGenres[genre.id] = results;
+        });
+        resolve(true);
       });
     });
+
+    function getGenreName(genreId: string | number) {
+      const genre = GENRES.find((genre) => String(genre.id) === genreId);
+      return genre?.name;
+    }
 
     return {
       getWatchListFromLoggedProfile,
       getWatchedListFromLoggedProfile,
       moviesByGenres,
       GENRES,
+      getGenreName,
     };
   },
 });
@@ -57,7 +66,7 @@ export default defineComponent({
     />
 
     <template v-for="(movies, key) in moviesByGenres" :key="key">
-      <HorizontalMovieList :title="GENRES[key]?.name || ''" :movies="movies" />
+      <HorizontalMovieList :title="getGenreName(key) || ''" :movies="movies" />
     </template>
   </div>
 </template>

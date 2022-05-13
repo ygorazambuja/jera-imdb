@@ -1,5 +1,5 @@
 <script lang="ts">
-import { onMounted, ref, defineComponent } from "vue";
+import { onMounted, ref, defineComponent, computed } from "vue";
 import { onBeforeRouteUpdate, useRoute } from "vue-router";
 import {
   getMovieById,
@@ -10,10 +10,11 @@ import {
 import type { IMovie } from "@/interfaces";
 import NavigationBar from "../components/NavigationBar.vue";
 import MovieListGrid from "../components/MovieListGrid.vue";
+import { FacebookIcon, TwitterIcon } from "@vue-icons/feather";
 
 export default defineComponent({
   name: "MovieDetailsView",
-  components: { NavigationBar, MovieListGrid },
+  components: { NavigationBar, MovieListGrid, FacebookIcon, TwitterIcon },
   setup() {
     const router = useRoute();
     const movieId = ref<string>(String(router.params.id));
@@ -32,8 +33,13 @@ export default defineComponent({
       if (to.params.id !== from.params.id) {
         movieId.value = String(to.params.id);
         await initView();
+        scrollToTop();
       }
     });
+
+    function scrollToTop() {
+      window.scrollTo(0, 0);
+    }
 
     async function initView() {
       asyncFetchMovieById();
@@ -43,7 +49,15 @@ export default defineComponent({
     onMounted(() => {
       initView();
     });
-    return { movie, getImageFullURL, recommendedMovies };
+
+    const getMovieShareOptions = computed(() => {
+      return {
+        url: `https://jera-imdb.vercel.app/filme/${movieId.value}`,
+        title: movie.value.title,
+      };
+    });
+
+    return { movie, getImageFullURL, recommendedMovies, getMovieShareOptions };
   },
 });
 </script>
@@ -59,6 +73,36 @@ export default defineComponent({
         </div>
         <div class="movie-title">
           <span>{{ movie.original_title }}</span>
+        </div>
+        <div class="movie-rating">
+          <span>{{ movie.vote_average }}</span>
+          <span>/10</span>
+        </div>
+        <div class="movie-sharing">
+          <ShareNetwork
+            :url="getMovieShareOptions.url"
+            network="whatsapp"
+            :title="getMovieShareOptions.title"
+            :style="{ backgroundColor: '#25D366' }"
+          >
+            <span>W</span>
+          </ShareNetwork>
+          <ShareNetwork
+            :url="getMovieShareOptions.url"
+            network="facebook"
+            :title="getMovieShareOptions.title"
+            :style="{ backgroundColor: '#1877f2' }"
+          >
+            <FacebookIcon size="20" />
+          </ShareNetwork>
+          <ShareNetwork
+            :url="getMovieShareOptions.url"
+            :title="getMovieShareOptions.title"
+            network="twitter"
+            :style="{ backgroundColor: '#1da1f2' }"
+          >
+            <TwitterIcon size="20" />
+          </ShareNetwork>
         </div>
         <div class="movie-description">
           <span>{{ movie.overview }}</span>
@@ -115,13 +159,45 @@ export default defineComponent({
       display: flex;
       justify-content: center;
       padding: 12px;
+      text-align: center;
 
       & span {
         font-size: 3rem;
       }
     }
 
+    .movie-sharing {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      margin: 8px;
+      padding: 0 12px;
+
+      & a {
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        text-decoration: none;
+        color: white;
+      }
+
+      & span {
+        font-size: 1.5rem;
+      }
+
+      & svg {
+        margin: 8px;
+      }
+
+      & .fa-lg {
+        font-size: 2rem;
+      }
+    }
+
     .movie-description {
+      max-width: 600px;
       width: 100%;
       display: flex;
       justify-content: center;

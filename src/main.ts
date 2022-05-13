@@ -3,6 +3,7 @@ import { createPinia } from "pinia";
 import piniaPluginPersistedState from "pinia-plugin-persistedstate";
 import Toast from "vue3-toast-single";
 import "vue3-toast-single/dist/toast.css";
+import VueSocialSharing from "vue-social-sharing";
 
 import App from "@/App.vue";
 import router from "./router";
@@ -16,5 +17,5 @@ app.use(router);
 app.use(pinia);
 
 app.use(Toast, { verticalPosition: "bottom", duration: 1500 });
-
+app.use(VueSocialSharing);
 app.mount("#app");
