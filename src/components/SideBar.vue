@@ -1,9 +1,10 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import { GENRES } from "@/utils/constants";
 import { useSideBarStore } from "@/stores/sidebar";
 import { storeToRefs } from "pinia";
+import { onClickOutside } from "@vueuse/core";
 
 export default defineComponent({
   name: "SideBar",
@@ -17,17 +18,24 @@ export default defineComponent({
       push(`/genero/${genre}`);
       toggleSideBar();
     }
+    const target = ref(null);
 
-    return { GENRES, handleRedirectToGenre, isOpen, toggleSideBar };
+    onClickOutside(target, () => {
+      toggleSideBar();
+    });
+    return { GENRES, handleRedirectToGenre, isOpen, toggleSideBar, target };
   },
 });
 </script>
 
 <template>
-  <div class="sidebar" v-if="isOpen">
+  <div class="sidebar" v-if="isOpen" ref="target">
     <h1>Jera-IMDB</h1>
 
     <ul class="sidebar-list">
+      <li class="sidebar-list__item">
+        <router-link to="/" @click="toggleSideBar"> Home </router-link>
+      </li>
       <li class="sidebar-list__item">
         <router-link to="/recomendados" @click="toggleSideBar"> Recommended </router-link>
       </li>
