@@ -56,15 +56,10 @@ export default {
 
 <template>
   <div class="loginContainer">
+    <h1>Jera-IMDB</h1>
     <VInput label="Login" v-model="self.login" data-cy="login" />
-    <VInput
-      label="Senha"
-      type="password"
-      v-model="self.password"
-      data-cy="password"
-    />
-    <VButton content="Entrar" @click="handleSubmit" data-cy="loginButton">
-    </VButton>
+    <VInput label="Senha" type="password" v-model="self.password" data-cy="password" />
+    <VButton content="Entrar" @click="handleSubmit" data-cy="loginButton"> </VButton>
     <VButton content="Criar conta" @click="handleCreateAccount"> </VButton>
   </div>
 </template>

@@ -5,11 +5,13 @@ import { GENRES } from "@/utils/constants";
 import { useSideBarStore } from "@/stores/sidebar";
 import { storeToRefs } from "pinia";
 import { onClickOutside } from "@vueuse/core";
+import { useAuth } from "@/composables/useAuth";
 
 export default defineComponent({
   name: "SideBar",
   setup() {
     const { push } = useRouter();
+    const { logout } = useAuth();
 
     const { toggleSideBar } = useSideBarStore();
     const { isOpen } = storeToRefs(useSideBarStore());
@@ -23,7 +25,14 @@ export default defineComponent({
     onClickOutside(target, () => {
       toggleSideBar();
     });
-    return { GENRES, handleRedirectToGenre, isOpen, toggleSideBar, target };
+    return {
+      GENRES,
+      handleRedirectToGenre,
+      isOpen,
+      toggleSideBar,
+      target,
+      logout,
+    };
   },
 });
 </script>
@@ -50,6 +59,10 @@ export default defineComponent({
         <a class="sidebar-list__link" @click="handleRedirectToGenre(item.id)">
           {{ item.name }}
         </a>
+      </li>
+
+      <li class="sidebar-list__item">
+        <router-link to="/" @click="logout()"> Sair </router-link>
       </li>
     </ul>
   </div>
