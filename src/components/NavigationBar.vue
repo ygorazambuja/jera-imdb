@@ -5,6 +5,7 @@ import { MenuIcon } from "@vue-icons/feather";
 import { useRouter } from "vue-router";
 import SideBar from "./SideBar.vue";
 import { useSideBarStore } from "@/stores/sidebar";
+import { useAuth } from "@/composables/useAuth";
 
 export default defineComponent({
   name: "NavigationBar",
@@ -16,6 +17,7 @@ export default defineComponent({
     const { loggedProfile } = useUserStore();
     const { toggleSideBar } = useSideBarStore();
 
+    const { isLogged } = useAuth();
     const { push } = useRouter();
 
     function handleRedirectToProfile() {
@@ -26,6 +28,7 @@ export default defineComponent({
       loggedProfile,
       toggleSideBar,
       handleRedirectToProfile,
+      isLogged,
     };
   },
 });
@@ -33,7 +36,7 @@ export default defineComponent({
 
 <template>
   <SideBar />
-  <nav class="navigation-list">
+  <nav v-if="isLogged" class="navigation-list">
     <div class="navigation-list__title">
       <span>
         <MenuIcon size="24" @click="toggleSideBar()" />

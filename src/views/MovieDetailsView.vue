@@ -11,6 +11,7 @@ import type { IMovie } from "@/interfaces";
 import NavigationBar from "../components/NavigationBar.vue";
 import MovieListGrid from "../components/MovieListGrid.vue";
 import { FacebookIcon, TwitterIcon } from "@vue-icons/feather";
+import { useAuth } from "@/composables/useAuth";
 
 export default defineComponent({
   name: "MovieDetailsView",
@@ -20,6 +21,8 @@ export default defineComponent({
     const movieId = ref<string>(String(router.params.id));
     const movie = ref({} as IMovie);
     const recommendedMovies = ref([] as IMovie[]);
+
+    const { isLogged } = useAuth();
     async function asyncFetchMovieById() {
       const data = await getMovieById(movieId.value);
       movie.value = data;
@@ -57,7 +60,13 @@ export default defineComponent({
       };
     });
 
-    return { movie, getImageFullURL, recommendedMovies, getMovieShareOptions };
+    return {
+      movie,
+      getImageFullURL,
+      recommendedMovies,
+      getMovieShareOptions,
+      isLogged,
+    };
   },
 });
 </script>
@@ -110,7 +119,7 @@ export default defineComponent({
       </div>
     </div>
 
-    <MovieListGrid label="Recomendados" :movies="recommendedMovies" />
+    <MovieListGrid v-if="isLogged" label="Recomendados" :movies="recommendedMovies" />
   </div>
 </template>
 
