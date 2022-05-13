@@ -57,3 +57,9 @@ export async function asyncFetchGetAllMoviesByGenres(
   const { data } = await axios.get(url);
   return data;
 }
+
+export async function asyncFetchAllRecommendations(id: number | string) {
+  const url = `${BASE_URL}/movie/${id}/recommendations?${API_KEY}`;
+  const { data } = await axios.get(url);
+  return data;
+}

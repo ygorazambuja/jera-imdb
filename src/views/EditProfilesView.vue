@@ -1,11 +1,12 @@
 <script lang="ts">
 import { useUserStore, type Profile } from "@/stores/user";
-import { defineComponent } from "vue";
+import { defineComponent, onMounted } from "vue";
 import VInput from "../components/VInput.vue";
 import VButton from "../components/VButton.vue";
 import { useToast } from "@/composables/useToast";
 import { ArrowLeftIcon } from "@vue-icons/feather";
 import { useRouter } from "vue-router";
+import { useAuth } from "@/composables/useAuth";
 
 export default defineComponent({
   name: "EditProfilesView",
@@ -15,6 +16,14 @@ export default defineComponent({
 
     const { successToast } = useToast();
     const { back } = useRouter();
+
+    const { isLogged, logout } = useAuth();
+
+    onMounted(() => {
+      if (!isLogged) {
+        logout();
+      }
+    });
 
     function saveProfile(profile: Profile) {
       updateProfile(profile);

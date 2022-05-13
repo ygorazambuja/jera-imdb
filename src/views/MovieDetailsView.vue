@@ -1,25 +1,49 @@
 <script lang="ts">
-import { onMounted, computed, ref, defineComponent } from "vue";
-import { useRoute } from "vue-router";
-import { getMovieById, getImageFullURL } from "@/services/imdb";
+import { onMounted, ref, defineComponent } from "vue";
+import { onBeforeRouteUpdate, useRoute } from "vue-router";
+import {
+  getMovieById,
+  getImageFullURL,
+  asyncFetchAllRecommendations,
+} from "@/services/imdb";
+
 import type { IMovie } from "@/interfaces";
 import NavigationBar from "../components/NavigationBar.vue";
+import MovieListGrid from "../components/MovieListGrid.vue";
 
 export default defineComponent({
   name: "MovieDetailsView",
-  components: { NavigationBar },
+  components: { NavigationBar, MovieListGrid },
   setup() {
     const router = useRoute();
-    const movieId = computed(() => String(router.params.id));
+    const movieId = ref<string>(String(router.params.id));
     const movie = ref({} as IMovie);
+    const recommendedMovies = ref([] as IMovie[]);
     async function asyncFetchMovieById() {
       const data = await getMovieById(movieId.value);
       movie.value = data;
     }
-    onMounted(() => {
-      asyncFetchMovieById();
+    async function fetchRecommendedMovies() {
+      const { results } = await asyncFetchAllRecommendations(movieId.value);
+      recommendedMovies.value = results;
+    }
+
+    onBeforeRouteUpdate(async (to, from) => {
+      if (to.params.id !== from.params.id) {
+        movieId.value = String(to.params.id);
+        await initView();
+      }
     });
-    return { movie, getImageFullURL };
+
+    async function initView() {
+      asyncFetchMovieById();
+      fetchRecommendedMovies();
+    }
+
+    onMounted(() => {
+      initView();
+    });
+    return { movie, getImageFullURL, recommendedMovies };
   },
 });
 </script>
@@ -41,6 +65,8 @@ export default defineComponent({
         </div>
       </div>
     </div>
+
+    <MovieListGrid label="Recomendados" :movies="recommendedMovies" />
   </div>
 </template>
 
@@ -91,7 +117,7 @@ export default defineComponent({
       padding: 12px;
 
       & span {
-        font-size: 2rem;
+        font-size: 3rem;
       }
     }
 
